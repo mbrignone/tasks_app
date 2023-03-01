@@ -51,7 +51,7 @@
           <li v-for="(item, index) in menuItems" :key="item.title">
             <a
               href="#"
-              class="block py-2 pl-3 pr-4"
+              class="block py-2 pl-3 pr-4 text-lg font-bold"
               :class="getMenuStyle(index)"
               @click="handleMenuClick(item, index)"
               aria-current="page"
@@ -63,14 +63,14 @@
       </div>
     </div>
   </nav>
-  <register-form></register-form>
+  <modal-form></modal-form>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { initModals } from "flowbite";
 
-import RegisterForm from "@/components/RegisterForm.vue";
+import ModalForm from "@/components/ModalForm.vue";
 
 const menuItems = [{ title: "Home" }, { title: "About" }];
 const selectedIndex = ref(0);
