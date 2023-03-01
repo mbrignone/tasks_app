@@ -2,10 +2,9 @@
   <!-- Modal content -->
   <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
     <div class="px-6 py-6 lg:px-8">
-      <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-        Sign in to our platform
-      </h3>
+      <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Login to our platform</h3>
       <form class="space-y-6" action="#">
+        <!-- Mail -->
         <div>
           <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >Your email</label
@@ -19,6 +18,7 @@
             required
           />
         </div>
+        <!-- Password -->
         <div>
           <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >Your password</label
@@ -32,21 +32,7 @@
             required
           />
         </div>
-        <div class="flex justify-between">
-          <div class="flex items-start">
-            <div class="flex items-center h-5">
-              <input
-                id="remember"
-                type="checkbox"
-                value=""
-                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                required
-              />
-            </div>
-            <label for="remember" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Remember me</label
-            >
-          </div>
+        <div class="flex justify-end">
           <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
             >Lost Password?</a
           >
@@ -57,10 +43,6 @@
         >
           Login to your account
         </button>
-        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-          Not registered?
-          <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
-        </div>
       </form>
     </div>
   </div>
