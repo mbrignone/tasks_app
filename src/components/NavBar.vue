@@ -51,7 +51,7 @@
           <li v-for="(item, index) in menuItems" :key="item.title">
             <a
               href="#"
-              class="block py-2 pl-3 pr-4"
+              class="block py-2 pl-3 pr-4 text-lg font-bold"
               :class="getMenuStyle(index)"
               @click="handleMenuClick(item, index)"
               aria-current="page"
