@@ -43,12 +43,16 @@
 </template>
 
 <script setup>
+import useUserStore from "@/stores/userStore";
+
 const schema = {
   email: "required|min:3|max:100|email",
   password: "required|min:8|max:100"
 };
 
+const userStore = useUserStore();
+
 function loginUser(values) {
-  console.log(values);
+  userStore.authenticate(values.email, values.password);
 }
 </script>
