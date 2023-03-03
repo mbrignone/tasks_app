@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 
 export default defineStore("user", {
   state: () => ({
-    userLoggedIn: false
+    userLoggedIn: false,
+    menuItems: [{ title: "Home" }, { title: "About" }]
   }),
 
   actions: {
@@ -13,6 +14,16 @@ export default defineStore("user", {
 
     signOut() {
       this.userLoggedIn = false;
+    }
+  },
+
+  getters: {
+    menuItems: (state) => {
+      if (!state.userLoggedIn) {
+        return [{ title: "Home" }, { title: "About" }];
+      } else {
+        return [{ title: "Tasks" }, { title: "About" }];
+      }
     }
   }
 });

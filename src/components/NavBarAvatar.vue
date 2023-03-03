@@ -33,13 +33,13 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onUpdated } from "vue";
 import { initDropdowns } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
 
 // initialize Flowbite dropdown component
-onMounted(() => {
+onUpdated(() => {
   initDropdowns();
 });
 

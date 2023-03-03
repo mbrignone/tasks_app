@@ -50,23 +50,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onUpdated } from "vue";
+import { storeToRefs } from "pinia";
 import { initModals } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
-
 import ModalForm from "@/components/ModalForm.vue";
 import NavBarAvatar from "@/components/NavBarAvatar.vue";
 
 const userStore = useUserStore();
-const userLoggedIn = ref(userStore.userLoggedIn);
-
-let menuItems;
-if (!userLoggedIn.value) {
-  menuItems = [{ title: "Home" }, { title: "About" }];
-} else {
-  menuItems = [{ title: "Tasks" }, { title: "About" }];
-}
+const { userLoggedIn, menuItems } = storeToRefs(userStore);
 
 const selectedIndex = ref(0);
 function getMenuStyle(index) {
@@ -84,7 +77,7 @@ function handleMenuClick(item, index) {
 }
 
 // initialize components based on data attribute selectors
-onMounted(() => {
+onUpdated(() => {
   initModals();
 });
 </script>
