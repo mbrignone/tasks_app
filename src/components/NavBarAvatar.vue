@@ -25,7 +25,9 @@
       </li>
     </ul>
     <div class="py-2">
-      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="signOut">
+        Sign out
+      </a>
     </div>
   </div>
 </template>
@@ -34,8 +36,15 @@
 import { onMounted } from "vue";
 import { initDropdowns } from "flowbite";
 
+import useUserStore from "@/stores/userStore";
+
 // initialize Flowbite dropdown component
 onMounted(() => {
   initDropdowns();
 });
+
+const userStore = useUserStore();
+function signOut() {
+  userStore.signOut();
+}
 </script>

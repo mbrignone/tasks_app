@@ -6,15 +6,16 @@
         <span class="self-center text-xl font-semibold whitespace-nowrap">Task APP </span>
       </a>
       <div class="flex md:order-2">
-        <!-- <button
+        <button
+          v-if="!userLoggedIn"
           type="button"
           data-modal-target="register-modal"
           data-modal-toggle="register-modal"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
         >
           Login / Register
-        </button> -->
-        <nav-bar-avatar></nav-bar-avatar>
+        </button>
+        <nav-bar-avatar v-else></nav-bar-avatar>
         <button
           data-collapse-toggle="navbar-sticky"
           type="button"
@@ -52,10 +53,21 @@
 import { ref, onMounted } from "vue";
 import { initModals } from "flowbite";
 
+import useUserStore from "@/stores/userStore";
+
 import ModalForm from "@/components/ModalForm.vue";
 import NavBarAvatar from "@/components/NavBarAvatar.vue";
 
-const menuItems = [{ title: "Home" }, { title: "About" }];
+const userStore = useUserStore();
+const userLoggedIn = ref(userStore.userLoggedIn);
+
+let menuItems;
+if (!userLoggedIn.value) {
+  menuItems = [{ title: "Home" }, { title: "About" }];
+} else {
+  menuItems = [{ title: "Tasks" }, { title: "About" }];
+}
+
 const selectedIndex = ref(0);
 function getMenuStyle(index) {
   return {
