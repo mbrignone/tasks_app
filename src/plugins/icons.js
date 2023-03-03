@@ -6,7 +6,8 @@ import {
   faCheck,
   faEllipsisV,
   faCaretDown,
-  faCaretUp
+  faCaretUp,
+  faBars
 } from "@fortawesome/free-solid-svg-icons";
 library.add(faCalendarDays);
 library.add(faXmark);
@@ -14,6 +15,7 @@ library.add(faCheck);
 library.add(faEllipsisV);
 library.add(faCaretDown);
 library.add(faCaretUp);
+library.add(faBars);
 
 export default {
   install(app) {
