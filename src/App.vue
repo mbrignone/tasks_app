@@ -1,6 +1,6 @@
 <template>
   <nav-bar></nav-bar>
-  <div class="min-h-screen bg-gray-100 pt-28 pb-5">
+  <div class="min-h-screen bg-gray-100 pt-10 pb-5">
     <!-- <home-view></home-view> -->
     <task-view></task-view>
   </div>
