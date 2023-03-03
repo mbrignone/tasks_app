@@ -48,7 +48,12 @@ const schema = {
   title: "required"
 };
 
+const props = defineProps(["pushTask"]);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const pushTask = props.pushTask;
 function createTask(values) {
   console.log(values);
+  pushTask(values);
+  showNewTask.value = false;
 }
 </script>
