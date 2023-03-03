@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white px-2 sm:px-4 md:py-2.5">
+  <nav class="bg-white px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0 border-b border-gray-200">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
       <a href="#" class="flex items-center">
         <font-awesome-icon icon="fa-solid fa-calendar-days" class="h-6 mr-3 sm:h-9" />
