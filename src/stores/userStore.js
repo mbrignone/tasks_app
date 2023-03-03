@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
+import { useLocalStorage } from "@vueuse/core";
 
 export default defineStore("user", {
   state: () => ({
-    userLoggedIn: false,
-    menuItems: [{ title: "Home" }, { title: "About" }]
+    userLoggedIn: useLocalStorage("userLoggedIn", false)
   }),
 
   actions: {
@@ -13,7 +13,7 @@ export default defineStore("user", {
     },
 
     signOut() {
-      this.userLoggedIn = false;
+      this.userLoggedIn = null;
     }
   },
 

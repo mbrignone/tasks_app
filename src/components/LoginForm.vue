@@ -43,6 +43,8 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
+
 import useUserStore from "@/stores/userStore";
 
 const schema = {
@@ -52,7 +54,9 @@ const schema = {
 
 const userStore = useUserStore();
 
+const router = useRouter();
 function loginUser(values) {
   userStore.authenticate(values.email, values.password);
+  router.push({ name: "tasks" });
 }
 </script>

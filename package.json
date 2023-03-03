@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vee-validate/rules": "^4.7.4",
+    "@vueuse/core": "^9.13.0",
     "flowbite": "^1.6.3",
     "pinia": "^2.0.32",
     "vee-validate": "^4.7.4",
