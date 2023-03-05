@@ -21,7 +21,6 @@
           type="button"
           class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
-          <span class="sr-only">Open main menu</span>
           <font-awesome-icon icon="fa-solid fa-bars" class="w-6 h-6" />
         </button>
       </div>
@@ -46,27 +45,22 @@
       </div>
     </div>
   </nav>
-  <modal-form></modal-form>
+  <modal-form v-if="!userLoggedIn"></modal-form>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onUpdated } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
 import { initModals } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
-
 import ModalForm from "@/components/ModalForm.vue";
 import NavBarAvatar from "@/components/NavBarAvatar.vue";
 
 const userStore = useUserStore();
-const userLoggedIn = ref(userStore.userLoggedIn);
-
-let menuItems;
-if (!userLoggedIn.value) {
-  menuItems = [{ title: "Home" }, { title: "About" }];
-} else {
-  menuItems = [{ title: "Tasks" }, { title: "About" }];
-}
+const { userLoggedIn, menuItems } = storeToRefs(userStore);
 
 const selectedIndex = ref(0);
 function getMenuStyle(index) {
@@ -78,13 +72,14 @@ function getMenuStyle(index) {
   };
 }
 
+const router = useRouter();
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
-  console.log(item.title);
+  router.push({ name: item.title.toLowerCase() });
 }
 
 // initialize components based on data attribute selectors
-onMounted(() => {
+onUpdated(() => {
   initModals();
 });
 </script>

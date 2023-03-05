@@ -54,5 +54,6 @@ const userStore = useUserStore();
 
 function loginUser(values) {
   userStore.authenticate(values.email, values.password);
+  window.location.reload();
 }
 </script>
