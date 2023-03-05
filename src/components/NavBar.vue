@@ -21,7 +21,6 @@
           type="button"
           class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
-          <span class="sr-only">Open main menu</span>
           <font-awesome-icon icon="fa-solid fa-bars" class="w-6 h-6" />
         </button>
       </div>
@@ -46,12 +45,14 @@
       </div>
     </div>
   </nav>
-  <modal-form></modal-form>
+  <modal-form v-if="!userLoggedIn"></modal-form>
 </template>
 
 <script setup>
 import { ref, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
 import { initModals } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
@@ -71,9 +72,10 @@ function getMenuStyle(index) {
   };
 }
 
+const router = useRouter();
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
-  console.log(item.title);
+  router.push({ name: item.title.toLowerCase() });
 }
 
 // initialize components based on data attribute selectors

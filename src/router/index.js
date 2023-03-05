@@ -4,12 +4,18 @@ import useUserStore from "@/stores/userStore";
 
 const Home = () => import("@/views/HomeView.vue");
 const Tasks = () => import("@/views/TaskView.vue");
+const About = () => import("@/views/AboutView.vue");
 
 const routes = [
   {
     name: "home",
     path: "/",
     component: Home
+  },
+  {
+    name: "about",
+    path: "/about",
+    component: About
   },
   {
     name: "tasks",
