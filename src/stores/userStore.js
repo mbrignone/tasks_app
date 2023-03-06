@@ -25,7 +25,7 @@ export default defineStore("user", {
       const userInfo = {
         token: response.data.access_token
       };
-      this.userInfo = useLocalStorage("userInfo", userInfo);
+      this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
 
       let userData;
       try {
@@ -34,13 +34,15 @@ export default defineStore("user", {
         console.log(error);
       }
 
-      if (userData.data.full_name) {
+      if (userData && userData.data.full_name) {
         userInfo["name"] = userData.data.full_name;
       } else {
         userInfo["name"] = email;
       }
 
       this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
+
+      return "Successful login";
     },
 
     signOut() {
@@ -50,11 +52,14 @@ export default defineStore("user", {
 
   getters: {
     menuItems: (state) => {
-      if (!state.userInfo) {
+      if (!state.userLoggedIn) {
         return [{ title: "Home" }, { title: "About" }];
       } else {
         return [{ title: "Tasks" }, { title: "About" }];
       }
+    },
+    userLoggedIn: (state) => {
+      return state.userInfo && Object.keys(state.userInfo).length > 0;
     }
   }
 });

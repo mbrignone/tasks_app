@@ -42,14 +42,14 @@ router.beforeEach((to, from) => {
     // a page that requires being auth without
     // being authenticated
     const userStore = useUserStore();
-    if (!userStore.userInfo) {
+    if (!userStore.userLoggedIn) {
       return { name: "home" };
     }
   } else if (to.name === "home") {
     // redirect to tasks page if trying to access
     // home page while being authenticated
     const userStore = useUserStore();
-    if (userStore.userInfo) {
+    if (userStore.userLoggedIn) {
       return { name: "tasks" };
     }
   }

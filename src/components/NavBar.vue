@@ -7,7 +7,7 @@
       </a>
       <div class="flex md:order-2">
         <button
-          v-if="!userInfo"
+          v-if="!userLoggedIn"
           type="button"
           data-modal-target="register-modal"
           data-modal-toggle="register-modal"
@@ -45,7 +45,7 @@
       </div>
     </div>
   </nav>
-  <modal-form v-if="!userInfo"></modal-form>
+  <modal-form v-if="!userLoggedIn"></modal-form>
 </template>
 
 <script setup>
@@ -60,7 +60,7 @@ import ModalForm from "@/components/ModalForm.vue";
 import NavBarAvatar from "@/components/NavBarAvatar.vue";
 
 const userStore = useUserStore();
-const { userInfo, menuItems } = storeToRefs(userStore);
+const { userLoggedIn, menuItems } = storeToRefs(userStore);
 
 const selectedIndex = ref(0);
 function getMenuStyle(index) {

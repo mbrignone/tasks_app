@@ -52,8 +52,9 @@ const schema = {
 
 const userStore = useUserStore();
 
-function loginUser(values) {
-  userStore.authenticate(values.email, values.password);
+async function loginUser(values) {
+  const resp = await userStore.authenticate(values.email, values.password);
+  console.log(resp);
   window.location.reload();
 }
 </script>
