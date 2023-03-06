@@ -19,4 +19,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { onUpdated, onMounted } from "vue";
+import { initModals } from "flowbite";
+
+onMounted(() => {
+  initModals();
+});
+onUpdated(() => {
+  initModals();
+});
+</script>

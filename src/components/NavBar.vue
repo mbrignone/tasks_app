@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, onUpdated } from "vue";
+import { ref, onUpdated, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 
@@ -78,7 +78,9 @@ function handleMenuClick(item, index) {
   router.push({ name: item.title.toLowerCase() });
 }
 
-// initialize components based on data attribute selectors
+onMounted(() => {
+  initModals();
+});
 onUpdated(() => {
   initModals();
 });

@@ -5,9 +5,8 @@
     class="flex items-center text-sm font-medium text-gray-900 rounded-full hover:text-blue-800 md:mr-0 focus:ring-4 focus:ring-gray-100"
     type="button"
   >
-    <span class="sr-only">Open user menu</span>
     <font-awesome-icon icon="fa-solid fa-user-tie" class="w-6 h-6 rounded-full" />
-    <div class="hidden md:inline md:mx-2">Mati Brig</div>
+    <div class="hidden md:inline md:mx-2">{{ userStore.userInfo.name }}</div>
     <font-awesome-icon icon="fa-solid fa-caret-down" />
   </button>
 

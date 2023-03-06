@@ -1,19 +1,52 @@
 import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 
+import { backendGet, backendPost } from "@/utils/backend_api";
+
 export default defineStore("user", {
   state: () => ({
-    userLoggedIn: useLocalStorage("userLoggedIn", false)
+    userInfo: useLocalStorage("userInfo", {})
   }),
 
   actions: {
-    authenticate(email, password) {
-      console.log(email, password);
-      this.userLoggedIn = true;
+    async authenticate(email, password) {
+      const loginData = { username: email, password };
+      let response;
+      try {
+        response = await backendPost("/api/token", loginData, false, true);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          return "invalid";
+        } else {
+          return "error";
+        }
+      }
+
+      const userInfo = {
+        token: response.data.access_token
+      };
+      this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
+
+      let userData = null;
+      try {
+        userData = await backendGet("/api/users/me");
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (userData && userData.data.full_name) {
+        userInfo["name"] = userData.data.full_name;
+      } else {
+        userInfo["name"] = email;
+      }
+
+      this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
+
+      return "success";
     },
 
     signOut() {
-      this.userLoggedIn = null;
+      this.userInfo = null;
     }
   },
 
@@ -24,6 +57,9 @@ export default defineStore("user", {
       } else {
         return [{ title: "Tasks" }, { title: "About" }];
       }
+    },
+    userLoggedIn: (state) => {
+      return state.userInfo && Object.keys(state.userInfo).length > 0;
     }
   }
 });
