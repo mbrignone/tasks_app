@@ -3,6 +3,7 @@
   <div class="relative bg-white rounded-lg shadow">
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Login to our platform</h3>
+      <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="loginUser">
         <!-- Mail -->
         <div>
@@ -43,19 +44,48 @@
 </template>
 
 <script setup>
+import { reactive } from "vue";
+
 import useUserStore from "@/stores/userStore";
+import AlertForm from "@/components/AlertForm.vue";
 
 const schema = {
   email: "required|min:3|max:100|email",
   password: "required|min:8|max:100"
 };
 
-const userStore = useUserStore();
+let alertInfo = reactive({
+  show: false,
+  message: "",
+  color: "text-green-600",
+  icon: "fa-solid fa-check",
+  iconBg: "bg-green-100"
+});
 
+const userStore = useUserStore();
 async function loginUser(values) {
   const resp = await userStore.authenticate(values.email, values.password);
   if (resp === "success") {
+    alertInfo.message = "Successful login!";
+    alertInfo.color = "text-green-600";
+    alertInfo.iconBg = "bg-green-100";
+    alertInfo.icon = "fa-solid fa-check";
+    alertInfo.show = true;
     window.location.reload();
+  } else {
+    if (resp === "invalid") {
+      alertInfo.message = "Invalid email or password";
+    } else {
+      alertInfo.message = "Error during login";
+    }
+    alertInfo.color = "text-red-600";
+    alertInfo.iconBg = "bg-red-100";
+    alertInfo.icon = "fa-solid fa-xmark";
+    alertInfo.show = true;
   }
+}
+
+function closeAlert() {
+  alertInfo.show = false;
 }
 </script>

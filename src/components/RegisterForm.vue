@@ -115,7 +115,7 @@ async function registerUser(values, { resetForm }) {
     return;
   }
 
-  alertInfo.message = "User registered";
+  alertInfo.message = "User registered!";
   alertInfo.color = "text-green-600";
   alertInfo.iconBg = "bg-green-100";
   alertInfo.icon = "fa-solid fa-check";

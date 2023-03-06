@@ -15,7 +15,7 @@ export default defineStore("user", {
       try {
         response = await backendPost("/api/token", loginData, false, true);
       } catch (error) {
-        if (error.response.status === 400) {
+        if (error.response && error.response.status === 400) {
           return "invalid";
         } else {
           return "error";
