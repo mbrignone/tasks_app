@@ -28,20 +28,22 @@
   >
     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
       <li v-for="option in cardOptions" :key="option.value" @click="selectCardOption(option.value)">
-        <a
-          href="#"
-          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100">
           {{ option.name }}
         </a>
       </li>
     </ul>
   </div>
+
+  <edit-task-form v-if="showEdit" :task="task" :updateShowEdit="updateShowEdit"></edit-task-form>
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { initDropdowns } from "flowbite";
+
+// import AlertForm from "@/components/AlertForm.vue";
+import EditTaskForm from "@/components/EditTaskForm.vue";
 
 // initialize Flowbite dropdown component
 onMounted(() => {
@@ -59,9 +61,15 @@ const cardOptions = [
   { name: "Remove", value: "remove" }
 ];
 
+const showEdit = ref(false);
+function updateShowEdit(value) {
+  showEdit.value = value;
+}
 function selectCardOption(option) {
   if (option === "remove") {
     deleteTask(task);
+  } else if (option === "edit") {
+    updateShowEdit(true);
   }
 }
 </script>
