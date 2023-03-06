@@ -3,27 +3,7 @@
   <div class="relative bg-white rounded-lg shadow">
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Sign in to our platform</h3>
-      <div
-        v-if="alertInfo.show"
-        class="flex items-center w-full p-4 mb-4 text-gray-500 bg-white rounded-lg shadow"
-      >
-        <div
-          class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg bg-green-100"
-          :class="alertInfo.iconBg"
-        >
-          <font-awesome-icon :icon="alertInfo.icon" class="w-5 h-5" :class="alertInfo.color" />
-        </div>
-        <div class="ml-3 text-base font-bold" :class="alertInfo.color">
-          {{ alertInfo.message }}
-        </div>
-        <button
-          @click="closeAlert"
-          type="button"
-          class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8"
-        >
-          <font-awesome-icon icon="fa-solid fa-xmark" class="w-5 h-5" />
-        </button>
-      </div>
+      <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="registerUser">
         <!-- Name -->
         <div>
@@ -99,6 +79,8 @@
 <script setup>
 import { reactive } from "vue";
 import { backendPost } from "@/utils/backend_api";
+
+import AlertForm from "@/components/AlertForm.vue";
 
 const schema = {
   name: "required|min:3|max:100",
