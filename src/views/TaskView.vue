@@ -4,14 +4,19 @@
       <new-task :pushTask="pushTask"></new-task>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center mx-3">
-      <task-item v-for="task in tasks" :key="task.id" :task="task"></task-item>
+      <task-item
+        v-for="task in tasks"
+        :key="task.id"
+        :task="task"
+        :deleteTask="deleteTask"
+      ></task-item>
     </div>
   </div>
 </template>
 
 <script setup>
 import { reactive } from "vue";
-import { backendGet } from "@/utils/backend_api";
+import { backendGet, backendDelete } from "@/utils/backend_api";
 
 import TaskItem from "@/components/TaskItem.vue";
 import NewTask from "@/components/NewTask.vue";
@@ -36,6 +41,22 @@ async function getTasks() {
 
 function pushTask(task) {
   tasks.push(task);
+}
+
+async function deleteTask(task) {
+  try {
+    // remove task from the DB
+    await backendDelete(`/api/todos/${task.id}`);
+  } catch (error) {
+    console.log("Failed to delete task");
+    return;
+  }
+
+  // remove task from tasks array
+  const index = tasks.indexOf(task);
+  if (index > -1) {
+    tasks.splice(index, 1);
+  }
 }
 
 getTasks();

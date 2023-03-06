@@ -48,16 +48,20 @@ onMounted(() => {
   initDropdowns();
 });
 
-const props = defineProps(["task"]);
+const props = defineProps(["task", "deleteTask"]);
 const task = reactive(props.task);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const deleteTask = props.deleteTask;
 const dropdownId = `${task.id}Dropdown`;
 
 const cardOptions = [
   { name: "Edit", value: "edit" },
-  { name: "Remove", value: "Remove" }
+  { name: "Remove", value: "remove" }
 ];
 
 function selectCardOption(option) {
-  console.log(`${option} - ${task.title}`);
+  if (option === "remove") {
+    deleteTask(task);
+  }
 }
 </script>

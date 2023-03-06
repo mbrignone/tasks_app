@@ -54,4 +54,25 @@ async function backendPost(endpoint, data, auth = true, form = false) {
   return response;
 }
 
-export { backendGet, backendPost };
+async function backendDelete(endpoint, auth = true) {
+  let response;
+  try {
+    if (!auth) {
+      response = await axios.delete(`${base_url}${endpoint}`);
+    } else {
+      const userStore = useUserStore();
+      response = await axios.delete(`${base_url}${endpoint}`, {
+        headers: {
+          Authorization: getAuthHeader(userStore)
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+
+  return response;
+}
+
+export { backendGet, backendPost, backendDelete };
