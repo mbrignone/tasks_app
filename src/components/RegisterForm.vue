@@ -3,6 +3,27 @@
   <div class="relative bg-white rounded-lg shadow">
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Sign in to our platform</h3>
+      <div
+        v-if="alertInfo.show"
+        class="flex items-center w-full p-4 mb-4 text-gray-500 bg-white rounded-lg shadow"
+      >
+        <div
+          class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg bg-green-100"
+          :class="alertInfo.iconBg"
+        >
+          <font-awesome-icon :icon="alertInfo.icon" class="w-5 h-5" :class="alertInfo.color" />
+        </div>
+        <div class="ml-3 text-base font-bold" :class="alertInfo.color">
+          {{ alertInfo.message }}
+        </div>
+        <button
+          @click="closeAlert"
+          type="button"
+          class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8"
+        >
+          <font-awesome-icon icon="fa-solid fa-xmark" class="w-5 h-5" />
+        </button>
+      </div>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="registerUser">
         <!-- Name -->
         <div>
@@ -76,6 +97,9 @@
 </template>
 
 <script setup>
+import { reactive } from "vue";
+import { backendPost } from "@/utils/backend_api";
+
 const schema = {
   name: "required|min:3|max:100",
   email: "required|min:3|max:100|email",
@@ -84,7 +108,40 @@ const schema = {
   tos: "tos_required"
 };
 
-function registerUser(values) {
-  console.log(values);
+let alertInfo = reactive({
+  show: false,
+  message: "",
+  color: "text-green-600",
+  icon: "fa-solid fa-check",
+  iconBg: "bg-green-100"
+});
+async function registerUser(values, { resetForm }) {
+  const userData = {
+    email: values.email,
+    password: values.password,
+    full_name: values.name
+  };
+
+  try {
+    await backendPost("/api/register", userData);
+  } catch (error) {
+    alertInfo.message = "Error registering user";
+    alertInfo.color = "text-red-600";
+    alertInfo.iconBg = "bg-red-100";
+    alertInfo.icon = "fa-solid fa-xmark";
+    alertInfo.show = true;
+    return;
+  }
+
+  alertInfo.message = "User registered";
+  alertInfo.color = "text-green-600";
+  alertInfo.iconBg = "bg-green-100";
+  alertInfo.icon = "fa-solid fa-check";
+  alertInfo.show = true;
+  resetForm();
+}
+
+function closeAlert() {
+  alertInfo.show = false;
 }
 </script>
