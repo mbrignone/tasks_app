@@ -11,23 +11,32 @@
 
 <script setup>
 import { reactive } from "vue";
+import { backendGet } from "@/utils/backend_api";
 
 import TaskItem from "@/components/TaskItem.vue";
 import NewTask from "@/components/NewTask.vue";
 
-const tasks = reactive([
-  { id: 0, title: "Task 1", description: "Do this." },
-  { id: 1, title: "Task 2", description: "Also do that." },
-  { id: 2, title: "Task 3", description: "Some boring task." },
-  { id: 3, title: "Task 4", description: "Some awesome task." }
-]);
+const tasks = reactive([]);
+async function getTasks() {
+  let response = null;
+  try {
+    response = await backendGet("/api/todos");
+  } catch (error) {
+    return;
+  }
 
-function pushTask(values) {
-  const task = {
-    id: tasks.length,
-    title: values.title,
-    description: values.description
-  };
+  if (response.data) {
+    response.data.forEach((task) => {
+      if (!tasks.includes(task)) {
+        tasks.push(task);
+      }
+    });
+  }
+}
+
+function pushTask(task) {
   tasks.push(task);
 }
+
+getTasks();
 </script>

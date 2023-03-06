@@ -65,8 +65,9 @@ const alertInfo = reactive({
   iconBg: "bg-green-100"
 });
 async function createTask(values) {
+  let response = null;
   try {
-    await backendPost("/api/todos", values);
+    response = await backendPost("/api/todos", values);
   } catch (error) {
     alertInfo.show = true;
     alertInfo.message = "Error creating task";
@@ -76,7 +77,7 @@ async function createTask(values) {
     return;
   }
 
-  pushTask(values);
+  pushTask(response.data);
   showNewTask.value = false;
 
   alertInfo.message = "Task created!";
