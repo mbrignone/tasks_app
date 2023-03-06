@@ -1,9 +1,4 @@
 <template>
-  <!-- <div
-    class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow fixed top-0 left-0 right-0 z-50"
-  >
-    
-  </div> -->
   <div class="container mx-auto">
     <div class="flex justify-center">
       <div class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-30">
