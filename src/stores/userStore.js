@@ -16,9 +16,9 @@ export default defineStore("user", {
         response = await backendPost("/api/token", loginData, false, true);
       } catch (error) {
         if (error.response.status === 400) {
-          return "Invalid email or password";
+          return "invalid";
         } else {
-          return "Error, please try again late";
+          return "error";
         }
       }
 
@@ -27,7 +27,7 @@ export default defineStore("user", {
       };
       this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
 
-      let userData;
+      let userData = null;
       try {
         userData = await backendGet("/api/users/me");
       } catch (error) {
@@ -42,7 +42,7 @@ export default defineStore("user", {
 
       this.userInfo = useLocalStorage("userInfo", userInfo, { mergeDefaults: true });
 
-      return "Successful login";
+      return "success";
     },
 
     signOut() {

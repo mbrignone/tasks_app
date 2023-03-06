@@ -54,7 +54,8 @@ const userStore = useUserStore();
 
 async function loginUser(values) {
   const resp = await userStore.authenticate(values.email, values.password);
-  console.log(resp);
-  window.location.reload();
+  if (resp === "success") {
+    window.location.reload();
+  }
 }
 </script>
