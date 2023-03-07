@@ -18,7 +18,7 @@ export default defineStore("tasks", {
 
       if (response.data) {
         response.data.forEach((task) => {
-          if (!this.tasks.includes(task)) {
+          if (!this.tasks.some((t) => t.id === task.id)) {
             this.tasks.push(task);
           }
         });

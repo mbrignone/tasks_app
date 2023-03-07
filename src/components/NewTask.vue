@@ -43,19 +43,16 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { backendPost } from "@/utils/backend_api";
+import useTaskStore from "@/stores/taskStore";
 
 import AlertForm from "@/components/AlertForm.vue";
 
 const showNewTask = ref(false);
+const taskStore = useTaskStore();
 
 const schema = {
   title: "required"
 };
-
-const props = defineProps(["pushTask"]);
-// eslint-disable-next-line vue/no-setup-props-destructure
-const pushTask = props.pushTask;
 
 const alertInfo = reactive({
   show: false,
@@ -65,10 +62,8 @@ const alertInfo = reactive({
   iconBg: "bg-green-100"
 });
 async function createTask(values) {
-  let response = null;
-  try {
-    response = await backendPost("/api/todos", values);
-  } catch (error) {
+  const success = await taskStore.createTask(values);
+  if (!success) {
     alertInfo.show = true;
     alertInfo.message = "Error creating task";
     alertInfo.color = "text-red-600";
@@ -77,7 +72,6 @@ async function createTask(values) {
     return;
   }
 
-  pushTask(response.data);
   showNewTask.value = false;
 
   alertInfo.message = "Task created!";
