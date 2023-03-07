@@ -4,9 +4,29 @@
       <h5 class="text-2xl font-bold tracking-tight text-gray-900">
         {{ task.title }}
       </h5>
-      <button :data-dropdown-toggle="dropdownId" class="px-2" type="button">
-        <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" class="scale-150" />
-      </button>
+      <div class="relative">
+        <button @click="showDropdown = !showDropdown" class="px-2" type="button">
+          <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" class="scale-150" />
+        </button>
+        <!-- Dropdown menu -->
+        <div
+          v-if="showDropdown"
+          ref="taskDropdown"
+          class="absolute -right-9 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-auto h-auto"
+        >
+          <ul class="py-2 text-sm text-gray-700">
+            <li
+              v-for="option in cardOptions"
+              :key="option.value"
+              @click="selectCardOption(option.value)"
+            >
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">
+                {{ option.name }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <p class="mb-3 font-normal text-gray-700">
       {{ task.description }}
@@ -21,43 +41,56 @@
     </a>
   </div>
 
-  <!-- Dropdown menu -->
-  <div
-    :id="dropdownId"
-    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-auto"
-  >
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-      <li v-for="option in cardOptions" :key="option.value" @click="selectCardOption(option.value)">
-        <a
-          href="#"
-          class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          {{ option.name }}
-        </a>
-      </li>
-    </ul>
-  </div>
+  <edit-task-form
+    v-if="showEdit"
+    :task="task"
+    :updateShowEdit="updateShowEdit"
+    :updateTask="updateTask"
+  ></edit-task-form>
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { onClickOutside } from "@vueuse/core";
 import { initDropdowns } from "flowbite";
+
+// import AlertForm from "@/components/AlertForm.vue";
+import EditTaskForm from "@/components/EditTaskForm.vue";
 
 // initialize Flowbite dropdown component
 onMounted(() => {
   initDropdowns();
 });
 
-const props = defineProps(["task"]);
+const props = defineProps(["task", "deleteTask", "updateTask"]);
 const task = reactive(props.task);
-const dropdownId = `${task.id}Dropdown`;
+// eslint-disable-next-line vue/no-setup-props-destructure
+const deleteTask = props.deleteTask;
+// eslint-disable-next-line vue/no-setup-props-destructure
+const updateTask = props.updateTask;
+const showDropdown = ref(false);
 
 const cardOptions = [
   { name: "Edit", value: "edit" },
-  { name: "Remove", value: "Remove" }
+  { name: "Remove", value: "remove" }
 ];
 
-function selectCardOption(option) {
-  console.log(`${option} - ${task.title}`);
+const showEdit = ref(false);
+function updateShowEdit(value) {
+  showEdit.value = value;
 }
+
+function selectCardOption(option) {
+  showDropdown.value = false;
+  if (option === "remove") {
+    deleteTask(task);
+  } else if (option === "edit") {
+    updateShowEdit(true);
+  }
+}
+
+const taskDropdown = ref(null);
+onClickOutside(taskDropdown, () => {
+  showDropdown.value = false;
+});
 </script>

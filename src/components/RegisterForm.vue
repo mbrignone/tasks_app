@@ -90,7 +90,7 @@ const schema = {
   tos: "tos_required"
 };
 
-let alertInfo = reactive({
+const alertInfo = reactive({
   show: false,
   message: "",
   color: "text-green-600",
