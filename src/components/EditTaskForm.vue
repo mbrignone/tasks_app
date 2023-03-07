@@ -53,10 +53,12 @@
 <script setup>
 import { reactive } from "vue";
 
-const props = defineProps(["task", "updateShowEdit"]);
+const props = defineProps(["task", "updateShowEdit", "updateTask"]);
 const task = reactive(props.task);
 // eslint-disable-next-line vue/no-setup-props-destructure
 const updateShowEdit = props.updateShowEdit;
+// eslint-disable-next-line vue/no-setup-props-destructure
+const updateTaskProp = props.updateTask;
 
 const schema = {
   title: "required"
@@ -66,8 +68,11 @@ const taskValues = {
   description: task.description
 };
 
-function updateTask(values) {
-  console.log(values);
-  updateShowEdit(false);
+async function updateTask(values) {
+  const success = await updateTaskProp(task, values);
+  if (success) {
+    updateShowEdit(false);
+    window.location.reload();
+  }
 }
 </script>

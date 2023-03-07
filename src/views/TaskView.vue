@@ -9,6 +9,7 @@
         :key="task.id"
         :task="task"
         :deleteTask="deleteTask"
+        :updateTask="updateTask"
       ></task-item>
     </div>
   </div>
@@ -16,7 +17,7 @@
 
 <script setup>
 import { reactive } from "vue";
-import { backendGet, backendDelete } from "@/utils/backend_api";
+import { backendGet, backendDelete, backendPut } from "@/utils/backend_api";
 
 import TaskItem from "@/components/TaskItem.vue";
 import NewTask from "@/components/NewTask.vue";
@@ -57,6 +58,26 @@ async function deleteTask(task) {
   if (index > -1) {
     tasks.splice(index, 1);
   }
+}
+
+async function updateTask(task, newTask) {
+  let response = null;
+  try {
+    // update task in the DB
+    response = await backendPut(`/api/todos/${task.id}`, newTask);
+  } catch (error) {
+    console.log("Failed to update task");
+    return false;
+  }
+
+  // update task in tasks array
+  const index = tasks.indexOf(task);
+  console.log(index);
+  if (index !== -1) {
+    tasks[index] = response.data;
+  }
+
+  return true;
 }
 
 getTasks();

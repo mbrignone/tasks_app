@@ -41,7 +41,12 @@
     </a>
   </div>
 
-  <edit-task-form v-if="showEdit" :task="task" :updateShowEdit="updateShowEdit"></edit-task-form>
+  <edit-task-form
+    v-if="showEdit"
+    :task="task"
+    :updateShowEdit="updateShowEdit"
+    :updateTask="updateTask"
+  ></edit-task-form>
 </template>
 
 <script setup>
@@ -57,10 +62,12 @@ onMounted(() => {
   initDropdowns();
 });
 
-const props = defineProps(["task", "deleteTask"]);
+const props = defineProps(["task", "deleteTask", "updateTask"]);
 const task = reactive(props.task);
 // eslint-disable-next-line vue/no-setup-props-destructure
 const deleteTask = props.deleteTask;
+// eslint-disable-next-line vue/no-setup-props-destructure
+const updateTask = props.updateTask;
 const showDropdown = ref(false);
 
 const cardOptions = [
