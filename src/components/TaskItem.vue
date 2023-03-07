@@ -39,35 +39,22 @@
       Mark as DONE
       <font-awesome-icon icon="fa-solid fa-check" class="ml-2" />
     </a>
-  </div>
 
-  <edit-task-form
-    v-if="showEdit"
-    :task="task"
-    :updateShowEdit="updateShowEdit"
-    :updateTask="updateTask"
-  ></edit-task-form>
+    <edit-task-form v-if="showEdit" :task="task" :updateShowEdit="updateShowEdit"></edit-task-form>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive } from "vue";
 import { onClickOutside } from "@vueuse/core";
-import { initDropdowns } from "flowbite";
 
-// import AlertForm from "@/components/AlertForm.vue";
+import useTaskStore from "@/stores/taskStore";
 import EditTaskForm from "@/components/EditTaskForm.vue";
 
-// initialize Flowbite dropdown component
-onMounted(() => {
-  initDropdowns();
-});
-
-const props = defineProps(["task", "deleteTask", "updateTask"]);
+const props = defineProps(["task"]);
 const task = reactive(props.task);
-// eslint-disable-next-line vue/no-setup-props-destructure
-const deleteTask = props.deleteTask;
-// eslint-disable-next-line vue/no-setup-props-destructure
-const updateTask = props.updateTask;
+const taskStore = useTaskStore();
+
 const showDropdown = ref(false);
 
 const cardOptions = [
@@ -83,7 +70,7 @@ function updateShowEdit(value) {
 function selectCardOption(option) {
   showDropdown.value = false;
   if (option === "remove") {
-    deleteTask(task);
+    taskStore.deleteTask(task);
   } else if (option === "edit") {
     updateShowEdit(true);
   }
