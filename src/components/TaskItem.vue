@@ -39,9 +39,9 @@
       Mark as DONE
       <font-awesome-icon icon="fa-solid fa-check" class="ml-2" />
     </a>
-  </div>
 
-  <edit-task-form v-if="showEdit" :task="task" :updateShowEdit="updateShowEdit"></edit-task-form>
+    <edit-task-form v-if="showEdit" :task="task" :updateShowEdit="updateShowEdit"></edit-task-form>
+  </div>
 </template>
 
 <script setup>
