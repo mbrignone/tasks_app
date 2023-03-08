@@ -69,6 +69,23 @@ export default defineStore("tasks", {
       }
 
       return true;
+    },
+    async resolveTask(task) {
+      let response = null;
+      try {
+        // update task in the DB
+        response = await backendPut(`/api/todos/${task.id}/resolve`);
+      } catch (error) {
+        console.log("Failed to update task");
+        return false;
+      }
+
+      // update task in the view
+      for (const key in task) {
+        task[key] = response.data[key];
+      }
+
+      return true;
     }
   }
 });
