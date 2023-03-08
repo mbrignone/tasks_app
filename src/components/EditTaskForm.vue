@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="flex justify-center">
-      <div class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-30">
+      <div class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-30 z-20">
         <div class="w-1/3 max-w-3xl p-6 bg-white rounded-md shadow-xl">
           <vee-form
             :validation-schema="schema"
@@ -74,7 +74,6 @@ async function updateTask(values) {
   const success = await taskStore.updateTask(task, values);
   if (success) {
     updateShowEdit(false);
-    window.location.reload();
   }
 }
 </script>

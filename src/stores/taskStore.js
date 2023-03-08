@@ -45,9 +45,9 @@ export default defineStore("tasks", {
         return false;
       }
 
-      // remove task from tasks array
+      // remove task from task array
       const index = this.tasks.indexOf(task);
-      if (index > -1) {
+      if (index !== -1) {
         this.tasks.splice(index, 1);
       }
 
@@ -63,11 +63,26 @@ export default defineStore("tasks", {
         return false;
       }
 
-      // update task in tasks array
-      const index = this.tasks.indexOf(task);
-      console.log(index);
-      if (index !== -1) {
-        this.tasks[index] = response.data;
+      // update task in the view
+      for (const key in task) {
+        task[key] = response.data[key];
+      }
+
+      return true;
+    },
+    async resolveTask(task) {
+      let response = null;
+      try {
+        // update task in the DB
+        response = await backendPut(`/api/todos/${task.id}/resolve`);
+      } catch (error) {
+        console.log("Failed to update task");
+        return false;
+      }
+
+      // update task in the view
+      for (const key in task) {
+        task[key] = response.data[key];
       }
 
       return true;
