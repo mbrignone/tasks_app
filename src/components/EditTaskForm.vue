@@ -74,7 +74,6 @@ async function updateTask(values) {
   const success = await taskStore.updateTask(task, values);
   if (success) {
     updateShowEdit(false);
-    window.location.reload();
   }
 }
 </script>
