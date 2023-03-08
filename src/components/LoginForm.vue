@@ -2,8 +2,9 @@
   <!-- Modal content -->
   <div class="relative bg-white rounded-lg shadow">
     <div class="px-6 py-6 lg:px-8">
-      <h3 class="mb-4 text-xl font-medium text-gray-900">Login to our platform</h3>
+      <h3 class="mb-4 text-xl font-medium text-gray-900">Log in to our platform</h3>
       <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
+      <google-button :message="'Log in with Google'" :sep="true"></google-button>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="loginUser">
         <!-- Mail -->
         <div>
@@ -48,6 +49,7 @@ import { reactive } from "vue";
 
 import useUserStore from "@/stores/userStore";
 import AlertForm from "@/components/AlertForm.vue";
+import GoogleButton from "@/components/GoogleButton.vue";
 
 const schema = {
   email: "required|min:3|max:100|email",

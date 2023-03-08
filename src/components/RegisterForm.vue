@@ -4,6 +4,7 @@
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Sign in to our platform</h3>
       <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
+      <google-button :message="'Sign in with Google'" :sep="true"></google-button>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="registerUser">
         <!-- Name -->
         <div>
@@ -81,6 +82,7 @@ import { reactive } from "vue";
 import { backendPost } from "@/utils/backend_api";
 
 import AlertForm from "@/components/AlertForm.vue";
+import GoogleButton from "@/components/GoogleButton.vue";
 
 const schema = {
   name: "required|min:3|max:100",
