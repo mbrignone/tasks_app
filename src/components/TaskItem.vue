@@ -15,14 +15,11 @@
           class="absolute -right-9 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-auto h-auto"
         >
           <ul class="py-2 text-sm text-gray-700">
-            <li
-              v-for="option in cardOptions"
-              :key="option.value"
-              @click="selectCardOption(option.value)"
-            >
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100">
-                {{ option.name }}
-              </a>
+            <li v-if="!task.done" @click="selectCardOption('edit')">
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"> Edit </a>
+            </li>
+            <li @click="selectCardOption('remove')">
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100"> Remove </a>
             </li>
           </ul>
         </div>
