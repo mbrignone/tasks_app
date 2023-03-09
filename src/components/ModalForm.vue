@@ -4,7 +4,7 @@
     tabindex="-1"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full"
   >
-    <div class="relative w-full h-full max-w-md md:h-auto">
+    <div class="relative w-full h-full max-w-md">
       <!-- Tabs for Login and Register forms -->
       <div
         class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 bg-white rounded-lg shadow"
