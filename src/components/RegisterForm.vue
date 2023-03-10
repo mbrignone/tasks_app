@@ -4,7 +4,11 @@
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Sign in to our platform</h3>
       <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
-      <google-button :message="'Sign in with Google'" :sep="true"></google-button>
+      <google-button
+        :message="'Sign in with Google'"
+        :sep="true"
+        :clickCallback="registerUserGoogle"
+      ></google-button>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="registerUser">
         <!-- Name -->
         <div>
@@ -79,7 +83,7 @@
 
 <script setup>
 import { reactive } from "vue";
-import { backendPost } from "@/utils/backend_api";
+import { backendGet, backendPost } from "@/utils/backend_api";
 
 import AlertForm from "@/components/AlertForm.vue";
 import GoogleButton from "@/components/GoogleButton.vue";
@@ -123,6 +127,31 @@ async function registerUser(values, { resetForm }) {
   alertInfo.icon = "fa-solid fa-check";
   alertInfo.show = true;
   resetForm();
+}
+
+async function registerUserGoogle() {
+  let response = null;
+  try {
+    response = await backendGet("/api/register_google", false);
+  } catch (error) {
+    console.log(error.config.url);
+    if (error.code != "ERR_NETWORK") {
+      alertInfo.message = "Error registering user";
+      alertInfo.color = "text-red-600";
+      alertInfo.iconBg = "bg-red-100";
+      alertInfo.icon = "fa-solid fa-xmark";
+      alertInfo.show = true;
+    }
+    return;
+  }
+
+  alertInfo.message = "User registered!";
+  alertInfo.color = "text-green-600";
+  alertInfo.iconBg = "bg-green-100";
+  alertInfo.icon = "fa-solid fa-check";
+  alertInfo.show = true;
+
+  console.log(response);
 }
 
 function closeAlert() {
