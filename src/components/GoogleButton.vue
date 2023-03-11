@@ -1,8 +1,6 @@
 <template>
-  <form :action="googleUrl" method="get" target="_blank">
+  <GoogleLogin :callback="callback" popup-type="TOKEN">
     <button
-      @click="clickCallback"
-      type="submit"
       class="text-gray-900 focus:outline-none bg-gray-50 font-bold rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2"
     >
       <svg
@@ -21,7 +19,7 @@
       </svg>
       {{ message }}
     </button>
-  </form>
+  </GoogleLogin>
   <div v-show="sep" class="flex justify-between items-center mb-1">
     <hr class="w-full" />
     <span class="p-2 text-gray-400">OR</span>
@@ -38,5 +36,7 @@ const sep = ref(props.sep);
 // eslint-disable-next-line vue/no-setup-props-destructure
 const clickCallback = props.clickCallback;
 
-const googleUrl = `${import.meta.env.VITE_BASE_URL}/api/register_google`;
+const callback = (response) => {
+  clickCallback(response.access_token);
+};
 </script>

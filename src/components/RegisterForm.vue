@@ -103,6 +103,23 @@ const alertInfo = reactive({
   icon: "fa-solid fa-check",
   iconBg: "bg-green-100"
 });
+
+function setAlertError(show = true) {
+  alertInfo.message = "Error registering user";
+  alertInfo.color = "text-red-600";
+  alertInfo.iconBg = "bg-red-100";
+  alertInfo.icon = "fa-solid fa-xmark";
+  alertInfo.show = show;
+}
+
+function setAlertSuccess(show = true) {
+  alertInfo.message = "User registered!";
+  alertInfo.color = "text-green-600";
+  alertInfo.iconBg = "bg-green-100";
+  alertInfo.icon = "fa-solid fa-check";
+  alertInfo.show = show;
+}
+
 async function registerUser(values, { resetForm }) {
   const userData = {
     email: values.email,
@@ -111,47 +128,31 @@ async function registerUser(values, { resetForm }) {
   };
 
   try {
-    await backendPost("/api/register", userData);
+    await backendPost("/api/register", userData, false);
   } catch (error) {
-    alertInfo.message = "Error registering user";
-    alertInfo.color = "text-red-600";
-    alertInfo.iconBg = "bg-red-100";
-    alertInfo.icon = "fa-solid fa-xmark";
-    alertInfo.show = true;
+    setAlertError();
     return;
   }
 
-  alertInfo.message = "User registered!";
-  alertInfo.color = "text-green-600";
-  alertInfo.iconBg = "bg-green-100";
-  alertInfo.icon = "fa-solid fa-check";
-  alertInfo.show = true;
+  setAlertSuccess;
   resetForm();
 }
 
-async function registerUserGoogle() {
-  let response = null;
-  try {
-    response = await backendGet("/api/register_google", false);
-  } catch (error) {
-    console.log(error.config.url);
-    if (error.code != "ERR_NETWORK") {
-      alertInfo.message = "Error registering user";
-      alertInfo.color = "text-red-600";
-      alertInfo.iconBg = "bg-red-100";
-      alertInfo.icon = "fa-solid fa-xmark";
-      alertInfo.show = true;
-    }
+async function registerUserGoogle(token) {
+  if (!token) {
+    setAlertError();
     return;
   }
 
-  alertInfo.message = "User registered!";
-  alertInfo.color = "text-green-600";
-  alertInfo.iconBg = "bg-green-100";
-  alertInfo.icon = "fa-solid fa-check";
-  alertInfo.show = true;
+  const data = { access_token: token };
+  try {
+    await backendPost("/api/register_google", data, false);
+  } catch (error) {
+    setAlertError();
+    return;
+  }
 
-  console.log(response);
+  setAlertSuccess();
 }
 
 function closeAlert() {
