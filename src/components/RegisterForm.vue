@@ -83,7 +83,7 @@
 
 <script setup>
 import { reactive } from "vue";
-import { backendGet, backendPost } from "@/utils/backend_api";
+import { backendPost } from "@/utils/backend_api";
 
 import AlertForm from "@/components/AlertForm.vue";
 import GoogleButton from "@/components/GoogleButton.vue";
