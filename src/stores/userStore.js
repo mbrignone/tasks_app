@@ -9,11 +9,17 @@ export default defineStore("user", {
   }),
 
   actions: {
-    async authenticate(email, password) {
-      const loginData = { username: email, password };
+    async authenticate(email, password, google_token = null) {
       let response;
+      let loginData;
       try {
-        response = await backendPost("/api/token", loginData, false, true);
+        if (!google_token) {
+          loginData = { username: email, password };
+          response = await backendPost("/api/token", loginData, false, true);
+        } else {
+          loginData = { access_token: google_token };
+          response = await backendPost("/api/token_google", loginData);
+        }
       } catch (error) {
         if (error.response && error.response.status === 400) {
           return "invalid";
@@ -47,6 +53,7 @@ export default defineStore("user", {
 
     signOut() {
       this.userInfo = null;
+      window.location.reload();
     }
   },
 

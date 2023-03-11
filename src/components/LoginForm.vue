@@ -2,8 +2,13 @@
   <!-- Modal content -->
   <div class="relative bg-white rounded-lg shadow">
     <div class="px-6 py-6 lg:px-8">
-      <h3 class="mb-4 text-xl font-medium text-gray-900">Login to our platform</h3>
+      <h3 class="mb-4 text-xl font-medium text-gray-900">Log in to our platform</h3>
       <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
+      <google-button
+        :message="'Log in with Google'"
+        :sep="true"
+        :clickCallback="loginUserGoogle"
+      ></google-button>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="loginUser">
         <!-- Mail -->
         <div>
@@ -45,16 +50,18 @@
 
 <script setup>
 import { reactive } from "vue";
+import { backendPost } from "@/utils/backend_api";
 
 import useUserStore from "@/stores/userStore";
 import AlertForm from "@/components/AlertForm.vue";
+import GoogleButton from "@/components/GoogleButton.vue";
 
 const schema = {
   email: "required|min:3|max:100|email",
   password: "required|min:8|max:100"
 };
 
-let alertInfo = reactive({
+const alertInfo = reactive({
   show: false,
   message: "",
   color: "text-green-600",
@@ -62,26 +69,52 @@ let alertInfo = reactive({
   iconBg: "bg-green-100"
 });
 
+function setAlertError(show = true, message = "Error during login") {
+  alertInfo.color = "text-red-600";
+  alertInfo.iconBg = "bg-red-100";
+  alertInfo.icon = "fa-solid fa-xmark";
+  alertInfo.message = message;
+  alertInfo.show = show;
+}
+
+function setAlertSuccess(show = true) {
+  alertInfo.message = "Successful login!";
+  alertInfo.color = "text-green-600";
+  alertInfo.iconBg = "bg-green-100";
+  alertInfo.icon = "fa-solid fa-check";
+  alertInfo.show = show;
+}
+
 const userStore = useUserStore();
 async function loginUser(values) {
   const resp = await userStore.authenticate(values.email, values.password);
   if (resp === "success") {
-    alertInfo.message = "Successful login!";
-    alertInfo.color = "text-green-600";
-    alertInfo.iconBg = "bg-green-100";
-    alertInfo.icon = "fa-solid fa-check";
-    alertInfo.show = true;
     window.location.reload();
   } else {
     if (resp === "invalid") {
-      alertInfo.message = "Invalid email or password";
+      setAlertError(true, "Invalid email or password");
     } else {
-      alertInfo.message = "Error during login";
+      setAlertError();
     }
-    alertInfo.color = "text-red-600";
-    alertInfo.iconBg = "bg-red-100";
-    alertInfo.icon = "fa-solid fa-xmark";
-    alertInfo.show = true;
+  }
+}
+
+async function loginUserGoogle(token) {
+  if (!token) {
+    setAlertError();
+    return;
+  }
+
+  const resp = await userStore.authenticate(null, null, token);
+  if (resp === "success") {
+    setAlertSuccess();
+    window.location.reload();
+  } else {
+    if (resp === "invalid") {
+      setAlertError(true, "Invalid email or password");
+    } else {
+      setAlertError();
+    }
   }
 }
 

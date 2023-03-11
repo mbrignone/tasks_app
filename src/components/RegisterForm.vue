@@ -4,6 +4,11 @@
     <div class="px-6 py-6 lg:px-8">
       <h3 class="mb-4 text-xl font-medium text-gray-900">Sign in to our platform</h3>
       <alert-form :alertInfo="alertInfo" :closeAlert="closeAlert"></alert-form>
+      <google-button
+        :message="'Sign in with Google'"
+        :sep="true"
+        :clickCallback="registerUserGoogle"
+      ></google-button>
       <vee-form class="space-y-6" :validation-schema="schema" @submit="registerUser">
         <!-- Name -->
         <div>
@@ -81,6 +86,7 @@ import { reactive } from "vue";
 import { backendPost } from "@/utils/backend_api";
 
 import AlertForm from "@/components/AlertForm.vue";
+import GoogleButton from "@/components/GoogleButton.vue";
 
 const schema = {
   name: "required|min:3|max:100",
@@ -97,6 +103,23 @@ const alertInfo = reactive({
   icon: "fa-solid fa-check",
   iconBg: "bg-green-100"
 });
+
+function setAlertError(show = true) {
+  alertInfo.message = "Error registering user";
+  alertInfo.color = "text-red-600";
+  alertInfo.iconBg = "bg-red-100";
+  alertInfo.icon = "fa-solid fa-xmark";
+  alertInfo.show = show;
+}
+
+function setAlertSuccess(show = true) {
+  alertInfo.message = "User registered!";
+  alertInfo.color = "text-green-600";
+  alertInfo.iconBg = "bg-green-100";
+  alertInfo.icon = "fa-solid fa-check";
+  alertInfo.show = show;
+}
+
 async function registerUser(values, { resetForm }) {
   const userData = {
     email: values.email,
@@ -105,22 +128,31 @@ async function registerUser(values, { resetForm }) {
   };
 
   try {
-    await backendPost("/api/register", userData);
+    await backendPost("/api/register", userData, false);
   } catch (error) {
-    alertInfo.message = "Error registering user";
-    alertInfo.color = "text-red-600";
-    alertInfo.iconBg = "bg-red-100";
-    alertInfo.icon = "fa-solid fa-xmark";
-    alertInfo.show = true;
+    setAlertError();
     return;
   }
 
-  alertInfo.message = "User registered!";
-  alertInfo.color = "text-green-600";
-  alertInfo.iconBg = "bg-green-100";
-  alertInfo.icon = "fa-solid fa-check";
-  alertInfo.show = true;
+  setAlertSuccess();
   resetForm();
+}
+
+async function registerUserGoogle(token) {
+  if (!token) {
+    setAlertError();
+    return;
+  }
+
+  const data = { access_token: token };
+  try {
+    await backendPost("/api/register_google", data, false);
+  } catch (error) {
+    setAlertError();
+    return;
+  }
+
+  setAlertSuccess();
 }
 
 function closeAlert() {

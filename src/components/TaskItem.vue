@@ -53,15 +53,14 @@ const task = reactive(props.task);
 const taskStore = useTaskStore();
 
 const showDropdown = ref(false);
-
-const cardOptions = [
-  { name: "Edit", value: "edit" },
-  { name: "Remove", value: "remove" }
-];
-
 const showEdit = ref(false);
 function updateShowEdit(value) {
   showEdit.value = value;
+  if (value) {
+    document.documentElement.style.overflow = "hidden";
+  } else {
+    document.documentElement.style.overflow = "auto";
+  }
 }
 
 function selectCardOption(option) {

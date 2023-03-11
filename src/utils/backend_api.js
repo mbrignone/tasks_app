@@ -1,7 +1,7 @@
 import axios from "axios";
 import useUserStore from "@/stores/userStore";
 
-const base_url = import.meta.env.VITE_BASE_URL;
+const base_url = import.meta.env.VITE_BACKEND_API_BASE_URL;
 
 function getAuthHeader(userStore) {
   return `Bearer ${userStore.userInfo.token}`;
