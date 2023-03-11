@@ -134,7 +134,7 @@ async function registerUser(values, { resetForm }) {
     return;
   }
 
-  setAlertSuccess;
+  setAlertSuccess();
   resetForm();
 }
 
