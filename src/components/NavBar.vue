@@ -8,9 +8,8 @@
       <div class="flex md:order-2">
         <button
           v-if="!userLoggedIn"
+          @click="updateShowModal(true)"
           type="button"
-          data-modal-target="register-modal"
-          data-modal-toggle="register-modal"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
         >
           Login / Register
@@ -43,7 +42,7 @@
       </div>
     </div>
   </nav>
-  <modal-form v-if="!userLoggedIn"></modal-form>
+  <modal-form v-if="showModal" :updateShowModal="updateShowModal"></modal-form>
 </template>
 
 <script setup>
@@ -57,7 +56,6 @@ import NavBarAvatar from "@/components/NavBarAvatar.vue";
 const userStore = useUserStore();
 const { userLoggedIn, menuItems } = storeToRefs(userStore);
 
-const showMenu = ref(false);
 const selectedIndex = ref(0);
 function getMenuStyle(index) {
   return {
@@ -68,8 +66,14 @@ function getMenuStyle(index) {
   };
 }
 
+const showMenu = ref(false);
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
   showMenu.value = false;
+}
+
+const showModal = ref(false);
+function updateShowModal(value) {
+  showModal.value = value;
 }
 </script>

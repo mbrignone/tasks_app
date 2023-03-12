@@ -9,24 +9,22 @@
       Login or register to start creating your awesome tasks.
     </p>
     <a
-      data-modal-target="register-modal"
-      data-modal-toggle="register-modal"
+      @click="updateShowModal"
       href="#"
       class="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
     >
       Get Started
     </a>
+    <modal-form v-if="showModal" :updateShowModal="updateShowModal"></modal-form>
   </div>
 </template>
 
 <script setup>
-import { onUpdated, onMounted } from "vue";
-import { initModals } from "flowbite";
+import { ref } from "vue";
+import ModalForm from "@/components/ModalForm.vue";
 
-onMounted(() => {
-  initModals();
-});
-onUpdated(() => {
-  initModals();
-});
+const showModal = ref(false);
+function updateShowModal(value) {
+  showModal.value = value;
+}
 </script>
