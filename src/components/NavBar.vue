@@ -17,19 +17,17 @@
         </button>
         <nav-bar-avatar v-else></nav-bar-avatar>
         <button
-          data-collapse-toggle="navbar-sticky"
           type="button"
+          @click="showMenu = !showMenu"
           class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
           <font-awesome-icon icon="fa-solid fa-bars" class="w-6 h-6" />
         </button>
       </div>
-      <div
-        class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-        id="navbar-sticky"
-      >
+      <div class="items-center justify-between w-full md:flex md:w-auto md:order-1">
         <ul
-          class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white"
+          class="flex-col p-2 mt-2 rounded-lg md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
+          :class="showMenu ? 'flex' : 'hidden'"
         >
           <li v-for="(item, index) in menuItems" :key="item.title">
             <router-link
@@ -59,6 +57,7 @@ import NavBarAvatar from "@/components/NavBarAvatar.vue";
 const userStore = useUserStore();
 const { userLoggedIn, menuItems } = storeToRefs(userStore);
 
+const showMenu = ref(false);
 const selectedIndex = ref(0);
 function getMenuStyle(index) {
   return {
@@ -71,5 +70,6 @@ function getMenuStyle(index) {
 
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
+  showMenu.value = false;
 }
 </script>
