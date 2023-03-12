@@ -32,14 +32,14 @@
           class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white"
         >
           <li v-for="(item, index) in menuItems" :key="item.title">
-            <a
-              href="#"
+            <router-link
+              :to="{ name: item.title.toLowerCase() }"
               class="block py-2 pl-3 pr-4 text-lg font-bold"
               :class="getMenuStyle(index)"
               @click="handleMenuClick(item, index)"
             >
               {{ item.title }}
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -49,11 +49,8 @@
 </template>
 
 <script setup>
-import { ref, onUpdated, onMounted } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-
-import { initModals } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
 import ModalForm from "@/components/ModalForm.vue";
@@ -72,16 +69,7 @@ function getMenuStyle(index) {
   };
 }
 
-const router = useRouter();
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
-  router.push({ name: item.title.toLowerCase() });
 }
-
-onMounted(() => {
-  initModals();
-});
-onUpdated(() => {
-  initModals();
-});
 </script>
