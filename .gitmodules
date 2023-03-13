@@ -1,0 +1,3 @@
+[submodule "fastapi_auth"]
+	path = fastapi_auth
+	url = git@github.com:mbrignone/fastapi_auth.git
