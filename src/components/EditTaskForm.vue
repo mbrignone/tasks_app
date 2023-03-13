@@ -2,7 +2,7 @@
   <div class="container mx-auto">
     <div class="flex justify-center">
       <div class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-30 z-20">
-        <div class="w-1/3 max-w-3xl p-6 bg-white rounded-md shadow-xl">
+        <div class="w-4/5 md:w-1/3 max-w-3xl p-6 bg-white rounded-md shadow-xl">
           <vee-form
             :validation-schema="schema"
             :initial-values="taskValues"
@@ -31,14 +31,14 @@
             <div class="flex justify-between">
               <button
                 type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-3 py-2 text-center"
               >
                 UPDATE TASK
               </button>
               <button
                 @click="updateShowEdit(false)"
                 type="button"
-                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center"
+                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-auto px-3 py-2 text-center"
               >
                 CANCEL
               </button>

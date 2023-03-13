@@ -8,52 +8,46 @@
       <div class="flex md:order-2">
         <button
           v-if="!userLoggedIn"
+          @click="updateShowModal(true)"
           type="button"
-          data-modal-target="register-modal"
-          data-modal-toggle="register-modal"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0"
         >
           Login / Register
         </button>
         <nav-bar-avatar v-else></nav-bar-avatar>
         <button
-          data-collapse-toggle="navbar-sticky"
           type="button"
+          @click="showMenu = !showMenu"
           class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         >
           <font-awesome-icon icon="fa-solid fa-bars" class="w-6 h-6" />
         </button>
       </div>
-      <div
-        class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-        id="navbar-sticky"
-      >
+      <div class="items-center justify-between w-full md:flex md:w-auto md:order-1">
         <ul
-          class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white"
+          class="flex-col p-2 mt-2 rounded-lg md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
+          :class="showMenu ? 'flex' : 'hidden'"
         >
           <li v-for="(item, index) in menuItems" :key="item.title">
-            <a
-              href="#"
+            <router-link
+              :to="{ name: item.title.toLowerCase() }"
               class="block py-2 pl-3 pr-4 text-lg font-bold"
               :class="getMenuStyle(index)"
               @click="handleMenuClick(item, index)"
             >
               {{ item.title }}
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <modal-form v-if="!userLoggedIn"></modal-form>
+  <modal-form v-if="showModal" :updateShowModal="updateShowModal"></modal-form>
 </template>
 
 <script setup>
-import { ref, onUpdated, onMounted } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
-
-import { initModals } from "flowbite";
 
 import useUserStore from "@/stores/userStore";
 import ModalForm from "@/components/ModalForm.vue";
@@ -72,16 +66,14 @@ function getMenuStyle(index) {
   };
 }
 
-const router = useRouter();
+const showMenu = ref(false);
 function handleMenuClick(item, index) {
   selectedIndex.value = index;
-  router.push({ name: item.title.toLowerCase() });
+  showMenu.value = false;
 }
 
-onMounted(() => {
-  initModals();
-});
-onUpdated(() => {
-  initModals();
-});
+const showModal = ref(false);
+function updateShowModal(value) {
+  showModal.value = value;
+}
 </script>
