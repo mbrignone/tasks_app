@@ -12,51 +12,27 @@ describe("TaskView.vue", () => {
     setActivePinia(createPinia());
   });
 
-  it("Render list of tasks (all pending)", () => {
+  it.each([
+    [3, 0],
+    [0, 3],
+    [2, 1]
+  ])("Render list of tasks (%i pending, %i done)", (pending, done) => {
     const taskStore = useTaskStore();
-    const tasks = [{}, {}, {}];
+    const tasks = [];
+    for (let i = 0; i < pending; i++) {
+      tasks.push({ done: false });
+    }
+    for (let i = 0; i < done; i++) {
+      tasks.push({ done: true });
+    }
     taskStore.tasks = tasks;
 
     const component = shallowMount(TaskView);
 
     const taskItems = component.findAllComponents(TaskItem);
-    expect(taskItems).toHaveLength(tasks.length);
-    expect(component.vm.pending_tasks).toHaveLength(tasks.length);
-    expect(component.vm.done_tasks).toHaveLength(0);
-
-    taskItems.forEach((wrapper, index) => {
-      expect(wrapper.props().task).toStrictEqual(tasks[index]);
-    });
-  });
-
-  it("Render list of tasks (all done)", () => {
-    const taskStore = useTaskStore();
-    const tasks = [{ done: true }, { done: true }, { done: true }];
-    taskStore.tasks = tasks;
-
-    const component = shallowMount(TaskView);
-
-    const taskItems = component.findAllComponents(TaskItem);
-    expect(taskItems).toHaveLength(tasks.length);
-    expect(component.vm.pending_tasks).toHaveLength(0);
-    expect(component.vm.done_tasks).toHaveLength(tasks.length);
-
-    taskItems.forEach((wrapper, index) => {
-      expect(wrapper.props().task).toStrictEqual(tasks[index]);
-    });
-  });
-
-  it("Render list of tasks (pending and done)", () => {
-    const taskStore = useTaskStore();
-    const tasks = [{ done: false }, { done: false }, { done: true }];
-    taskStore.tasks = tasks;
-
-    const component = shallowMount(TaskView);
-
-    const taskItems = component.findAllComponents(TaskItem);
-    expect(taskItems).toHaveLength(tasks.length);
-    expect(component.vm.pending_tasks).toHaveLength(2);
-    expect(component.vm.done_tasks).toHaveLength(1);
+    expect(taskItems).toHaveLength(pending + done);
+    expect(component.vm.pending_tasks).toHaveLength(pending);
+    expect(component.vm.done_tasks).toHaveLength(done);
 
     taskItems.forEach((wrapper, index) => {
       expect(wrapper.props().task).toStrictEqual(tasks[index]);
