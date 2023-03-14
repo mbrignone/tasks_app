@@ -1,57 +1,47 @@
-# tasks_app
+# TASKS app
 
-This template should help get you started developing with Vue 3 in Vite.
+A Tasks / To-Do app using Vue and Tailwind CSS. Most of the component styles are taken from [Flowbite](https://flowbite.com/).
 
-## Recommended IDE Setup
+The backend of the app is in a [separate repository](https://github.com/mbrignone/fastapi_auth), included as a submodule here, and it uses FastAPI and PostgreSQL.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Features
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- Sign in / up using Google or with email and password.
+- Create, edit and remove tasks with a title and a description.
+- Mark tasks as done.
+- Responsive design.
 
 ## Project Setup
 
+1. Clone the repository, including the submodule (`--recursive`), which contains the backend.
+
 ```sh
-npm install
+$ git clone --recursive git@github.com:mbrignone/tasks_app.git
 ```
 
-### Compile and Hot-Reload for Development
+2. Create Google OAuth client ID credentials (see [here](https://developers.google.com/workspace/guides/create-credentials)) and add both `http://localhost` and `http://localhost:5173` as Authorized JavaScript origins.
 
-```sh
-npm run dev
+3. Create a `src/environment/.env` file with the following values:
+
+```
+VITE_BACKEND_API_BASE_URL=http://127.0.0.1:80
+VITE_GOOGLE_LOGIN_CLIENT_ID=<your_client_id>
 ```
 
-### Compile and Minify for Production
+NOTE: You can skip step #2 and then don't set the Google client ID in step #3. The app will still work but you will get an error if you try to authenticate using Google.
+
+## Run the App
 
 ```sh
-npm run build
+$ docker compose up -d [--build]
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+The `--build` option forces a rebuild of the images before starting the containers.
+
+The app should now be running on http://localhost:5173/.
+You can see the frontend and the backend logs using the `docker logs` command (with the `--follow` optionally).
 
 ```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
+$ docker logs vue_app
+$ docker logs fastapi_app
 ```

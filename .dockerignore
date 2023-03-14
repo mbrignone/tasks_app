@@ -1,0 +1,9 @@
+Dockerfile
+
+.git
+.gitignore
+.github
+
+node_modules
+cypress
+src/components/__tests__
